@@ -56,7 +56,9 @@
   :depends-on ("haiku"
                "prove")
 
-  :components ((:test-file "test/haiku-test"))
+  :components ((:module test
+                  :components
+                    ((:test-file "haiku-test"))))
 
   :perform (test-op :after (op c)
              (funcall (intern #.(string :run) :prove) c)))

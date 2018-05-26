@@ -1,0 +1,20 @@
+Two ways to use haiku
+	-As a simple executable
+	-As a simple framework
+
+Don't forget about function calls from markdown
+
+Current Dependencies:
+	-cl-mustache
+	-cl-markdown
+	-split-sequence
+
+Current problem:
+   For whatever god-forsaken reason assoc doesn't like to work when checking for 'extends, 'body etc in bindings. WTF
+
+
+To build:
+  (asdf:operate 'asdf:load-op 'haiku)
+
+To test:
+  (asdf:test-system 'haiku)
