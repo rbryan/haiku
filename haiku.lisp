@@ -6,6 +6,22 @@
 
 (in-package :haiku)
 
-;(defun render-markdown (file &optional output-file)
-;  (let ((output-name
-
+(defun render-md-dir (md-dir output-dir)
+  (let ((md-dir (uiop:directory-exists-p md-dir))
+        (output-dir (uiop:directory-exists-p output-dir)))
+    ;add a check that md-dir and output-dir exist
+    (assert (and md-dir output-dir))
+    (let* ((in-files (files:files-by-extension md-dir ".md"))
+           (out-file-dirs (mapcar (lambda (path)
+                                (uiop:pathname-directory-pathname
+                                  (files:rebase-pathname path md-dir output-dir)))
+                              in-files)))
+      (uiop:ensure-all-directories-exist out-file-dirs)
+      ;add a check that there are md files
+      (mapcar (lambda (file out-file-dir)
+          (let* ((bname (files:basename file))
+                 (ofname (format nil "~a/~a.html" out-file-dir bname)))
+            (md:render-to-file file ofname)))
+          in-files
+          out-file-dirs))))
+        

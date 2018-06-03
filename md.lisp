@@ -44,8 +44,8 @@
 (defun get-md-template (md)
   (let ((template-binding (binding-assoc 'template (md-bindings md)))
         (base-template-loc (in-template-dir parameters:*base-template-name*)))
-    (format t "md bindings: ~a~%" (md-bindings md))
-    (format t "Template binding: ~a~%" template-binding)
+;    (format t "md bindings: ~a~%" (md-bindings md))
+;    (format t "Template binding: ~a~%" template-binding)
     (cond
       (template-binding
           (load-template (in-template-dir (cdr template-binding))))
@@ -94,7 +94,7 @@
 (defun render-with-bindings (html bindings)
   (let ((template (let ((tb (binding-assoc 'extends bindings)))
                     (if tb
-                      (progn (format t "Using template ~a~%" (cdr tb))
+                      (progn ;(format t "Using template ~a~%" (cdr tb))
                       (load-template (in-template-dir (cdr tb))))))))
     (if template
       (render-with-bindings

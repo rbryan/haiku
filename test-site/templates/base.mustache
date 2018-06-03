@@ -1,0 +1,46 @@
+((email . "russell.e.bryan@gmail.com")
+ (copyright . "Russell Bryan © 2018")
+ (page-title . "Haiku")
+ (site-title . "Haiku")
+ (site-subtitle . "A static site generator for the functional minimalist"))
+
+<html>
+  <meta charset="utf-8"/>
+
+  <title>
+    {{page-title}}
+  </title>
+
+  <head title="Haiku">
+
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <link rel="icon" type="image/png"
+     href="/assets/img/maple_leaf.png">
+
+  </head>
+
+<body class="center container">
+
+  <header class="navbar">
+    <img class="navbar-leaves" src="/assets/img/three_leaves.png">
+    <a href="index.html"> {{site-title}} </a>
+    <ul class="navbar-links">
+      <a href="https://github.com/rbryan"> git </a>
+      <a href="https://wwww.youtube.com/"> youbute </a>
+      <a href="https://github.com/rbryan"> another </a>
+    </ul>
+  </header>
+
+  <p class="subtitle"> {{site-subtitle}} </p>
+
+   {{{body}}}
+
+  <footer>
+    <p> {{copyright}} </p>
+    <p> {{email}} </p>
+    <img src="/assets/img/maple_leaf.png">
+  </footer>
+</body>
+</html>
