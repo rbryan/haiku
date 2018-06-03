@@ -81,10 +81,11 @@
 ;
 ;Values closer to the markdown will shadow higher up values by being first in the alist
 
-(defun render-md (md)
+(defun render-md (md &optional initial-bindings)
   (let* ((md-temp (get-md-template md))
+         (md-binds (add-bindings (md-bindings md) initial-bindings))
          (bindings (add-bindings (template-bindings md-temp)
-                                 (md-bindings md))))
+                                 md-binds)))
     (render-with-bindings
       (mustache:render* (template-body md-temp)
                         (append `((body . ,(md-to-string (md-body md))))
@@ -103,6 +104,6 @@
         (add-bindings (template-bindings template) bindings))
       html)))
 
-(defun render-to-file (mdf ofname)
+(defun render-to-file (mdf ofname &optional init-binds)
   (with-open-file (ofs ofname :if-exists :supersede :if-does-not-exist :create :direction :output)
-    (format ofs "~a" (render-md (load-md mdf)))))
+    (format ofs "~a" (render-md (load-md mdf) init-binds))))
