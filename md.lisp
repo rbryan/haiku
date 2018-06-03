@@ -44,8 +44,8 @@
 (defun get-md-template (md)
   (let ((template-binding (binding-assoc 'template (md-bindings md)))
         (base-template-loc (in-template-dir parameters:*base-template-name*)))
-;    (format t "md bindings: ~a~%" (md-bindings md))
-;    (format t "Template binding: ~a~%" template-binding)
+    ;(format t "md bindings: ~a~%" (md-bindings md))
+    ;(format t "Template binding: ~a~%" template-binding)
     (cond
       (template-binding
           (load-template (in-template-dir (cdr template-binding))))
@@ -93,16 +93,18 @@
       bindings)))
 
 (defun render-with-bindings (html bindings)
+  ;(format t "render-with-bindings: ~a~%" bindings)
   (let ((template (let ((tb (binding-assoc 'extends bindings)))
                     (if tb
                       (progn ;(format t "Using template ~a~%" (cdr tb))
                       (load-template (in-template-dir (cdr tb))))))))
     (if template
-      (render-with-bindings
-        (mustache:render* (template-body template)
-                          (append  `((body . ,html)) bindings))
-        (add-bindings (template-bindings template) bindings))
-      html)))
+      (let ((new-bindings (add-bindings (template-bindings template) bindings)))
+        (render-with-bindings
+          (mustache:render* (template-body template)
+                            (append  `((body . ,html)) new-bindings))
+          new-bindings))
+        html)))
 
 (defun render-to-file (mdf ofname &optional init-binds)
   (with-open-file (ofs ofname :if-exists :supersede :if-does-not-exist :create :direction :output)
