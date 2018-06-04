@@ -87,9 +87,9 @@
          (bindings (add-bindings (template-bindings md-temp)
                                  md-binds)))
     (render-with-bindings
-      (mustache:render* (template-body md-temp)
-                        (append `((body . ,(md-to-string (md-body md))))
-                                 bindings))
+      (templates:render-template md-temp
+                        (md-to-string (md-body md))
+                                 bindings)
       bindings)))
 
 (defun render-with-bindings (html bindings)
@@ -101,9 +101,8 @@
       (if template
         (let ((new-bindings (add-bindings (template-bindings template) bindings)))
           (render-with-bindings
-            (mustache:render* (template-body template)
-                              (append  `((body . ,html)) new-bindings))
-          new-bindings))
+            (templates:render-template template html new-bindings)
+            new-bindings))
         (cons html bindings))))
 
 (defun render-to-file (mdf ofname &key initial-bindings)

@@ -7,6 +7,7 @@
     :template-bindings
     :template-location
     :template-name
+    :render-template
     :in-template-dir))
 
 (in-package :templates)
@@ -32,3 +33,7 @@
               "/"
               template-name))
 
+(defun render-template (template body bindings)
+      (mustache:render* (template-body template)
+                        (append `((body . ,body))
+                                 bindings)))

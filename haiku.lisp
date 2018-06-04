@@ -1,7 +1,10 @@
 (defpackage :haiku
   (:use :cl :files :md :utils
-        :parameters)
+        :parameters :templates)
   (:export
+    :render-md-dir
+    :render-with-bindings
+    :render-template
 ))
 
 (in-package :haiku)
