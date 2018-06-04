@@ -98,14 +98,16 @@
                     (if tb
                       (progn ;(format t "Using template ~a~%" (cdr tb))
                       (load-template (in-template-dir (cdr tb))))))))
-    (if template
-      (let ((new-bindings (add-bindings (template-bindings template) bindings)))
-        (render-with-bindings
-          (mustache:render* (template-body template)
-                            (append  `((body . ,html)) new-bindings))
+      (if template
+        (let ((new-bindings (add-bindings (template-bindings template) bindings)))
+          (render-with-bindings
+            (mustache:render* (template-body template)
+                              (append  `((body . ,html)) new-bindings))
           new-bindings))
-        html)))
+        (cons html bindings))))
 
-(defun render-to-file (mdf ofname &optional init-binds)
+(defun render-to-file (mdf ofname &key initial-bindings)
   (with-open-file (ofs ofname :if-exists :supersede :if-does-not-exist :create :direction :output)
-    (format ofs "~a" (render-md (load-md mdf) init-binds))))
+    (let ((output (render-md (load-md mdf) initial-bindings)))
+      (format ofs "~a" (car output))
+      output)))

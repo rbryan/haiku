@@ -6,7 +6,7 @@
 
 (in-package :haiku)
 
-(defun render-md-dir (md-dir output-dir &optional init-binds)
+(defun render-md-dir (md-dir output-dir &key render-callback initial-bindings verbose)
   (let ((md-dir (uiop:directory-exists-p md-dir))
         (output-dir (uiop:directory-exists-p output-dir)))
     ;add a check that md-dir and output-dir exist
@@ -19,9 +19,17 @@
       (uiop:ensure-all-directories-exist out-file-dirs)
       ;add a check that there are md files
       (mapcar (lambda (file out-file-dir)
+                (if verbose
+                  (format t "Rendering ~a...~%" file))
+                (finish-output)
           (let* ((bname (files:basename file))
-                 (ofname (format nil "~a/~a.html" out-file-dir bname)))
-            (md:render-to-file file ofname init-binds)))
+                 (ofname (format nil "~a/~a.html" out-file-dir bname))
+                 (output (md:render-to-file file
+                                            ofname
+                                            :initial-bindings initial-bindings)))
+            (if render-callback
+              (funcall render-callback ofname (cdr output))
+              output)))
           in-files
           out-file-dirs))))
         
